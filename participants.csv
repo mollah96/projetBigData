@@ -1,0 +1,20 @@
+id_event,name,is_victim,gender,race,hospitalized,killed
+0,True,,Female,,False,True,False
+0,True,,Female,,False,True,False
+0,True,,Female,,False,True,False
+0,True,,Male,,False,True,False
+1,True,,,,False,False,True
+2,True,,Male,,True,False,True
+2,False,,Female,,False,False,False
+2,False,,Male,,False,False,False
+2,True,,Male,,True,False,True
+2,True,,Female,,True,False,True
+2,True,,Female,,True,False,True
+3,False,Alex Buckner,Male,,False,False,False
+3,True,,Female,,True,False,True
+3,True,,,,False,True,False
+3,True,,,,False,True,False
+3,True,Alex Buckner,Male,,False,True,False
+4,True,William Reddin,Male,,False,False,True
+5,True,,Male,,True,False,True
+5,True,,,,True,False,True
