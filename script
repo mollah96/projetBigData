@@ -1,0 +1,70 @@
+CREATE KEYSPACE test
+WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
+CREATE TABLE people(
+	id int PRIMARY KEY,
+	name text,
+	sex text,
+	age int
+);
+
+
+create TABLE events_location(
+	id int primary key,
+	city text,
+	state text,
+);
+
+create table events_date(
+	id int primary key,
+	date text,
+);
+
+create table test_date(
+	id int primary key,
+	date date,
+);
+
+create table events(
+	id text primary key,
+	date date
+	city text,
+	state text,);
+
+
+create table graduation(
+	state text,
+	year int,
+	grad_rate double,
+	primary key(state,year)
+);
+
+create table law(
+	state text,
+	year int,
+	law_rate double,
+	primary key(state,year)
+);
+
+create table revenue(
+	state text primary key,
+	total_revenue double,
+	cost_per_pupil double,
+	pct_state_total double);
+
+create table sat(
+	state text primary key,
+	score int);
+
+create table gun_ownership(
+	state text primary key,
+	gun_ownership double,
+	population int
+);
+
+
+create table state(
+	state text primary key,
+	shorthand text);
+
+
+
