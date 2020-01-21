@@ -79,5 +79,16 @@ create table state(
 	state text primary key,
 	shorthand text);
 
+create table immigrants(
+	state text primary key,
+	illegal_immigrants int,
+	rate double
+);
 
+create table police(
+	state text primary key,
+	total_income double,
+	police_spending double,
+	rate double
+);
 

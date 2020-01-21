@@ -8,20 +8,18 @@ from datetime import *
 cluster = Cluster(['172.17.0.2'])
 session = cluster.connect('test')
 sql = "BEGIN BATCH \n"
-with open('revenue.csv') as tsvfile:
-    reader = csv.reader(tsvfile,delimiter=',')
+with open('immigrants.csv') as tsvfile:
+    reader = csv.reader(tsvfile)
     header = False
     counter = 0
     for row in reader:
         if not header:
             header = True
         else:
-            print(row)
             state = row[0]
-            total = row[1]
-            cost = row[2]
-            pct = row[3]
-            sql_single = 'INSERT INTO revenue(state,total_revenue,cost_per_pupil,pct_state_total) VALUES (' + '\''+state+'\'' + ','+str(total)+',' + str(cost)+','+str(pct)+');\n'
+            illegal_immigrants = row[1]
+            rate = row[2]
+            sql_single = 'INSERT INTO immigrants(state,illegal_immigrants,rate) VALUES (' + '\''+state+'\'' + ','+str(illegal_immigrants)+',' + str(rate)+');\n'
             sql += sql_single
             counter += 1
             if counter % 100 == 0:
