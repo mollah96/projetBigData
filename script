@@ -1,12 +1,16 @@
-CREATE KEYSPACE test
+~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars ~/spark-cassandra-connector/spark-cassandra-connector-java/target/scala-2.10/spark-cassandra-connector-java-assembly-1.4.0-SNAPSHOT.jar
+
+CREATE KEYSPACE myKeySpace
 WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
+
+use myKeySpace;
+
 CREATE TABLE people(
 	id int PRIMARY KEY,
 	name text,
 	sex text,
 	age int
 );
-
 
 create TABLE events_location(
 	id int primary key,
@@ -16,20 +20,19 @@ create TABLE events_location(
 
 create table events_date(
 	id int primary key,
-	date text,
+	date text
 );
 
 create table test_date(
 	id int primary key,
-	date date,
+	date date
 );
 
 create table events(
 	id text primary key,
-	date date
+	date date,
 	city text,
-	state text,);
-
+	state text);
 
 create table graduation(
 	state text,
@@ -39,8 +42,10 @@ create table graduation(
 );
 
 create table law(
+    id int,
 	state text,
 	year int,
+	grade text,
 	law_rate double,
 	primary key(state,year)
 );
@@ -60,7 +65,6 @@ create table gun_ownership(
 	gun_ownership double,
 	population int
 );
-
 
 create table state(
 	state text primary key,
