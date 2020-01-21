@@ -1,0 +1,14 @@
+~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars /home/ubuntu/spark-cassandra-connector/spark-cassandra-connector/target/full/scala-2.11/spark-cassandra-connector-assembly-2.4.2.jar
+
+
+sc.stop
+import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf
+val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
+val sc = new SparkContext(conf)
+
+// test
+val test_spark_rdd = sc.cassandraTable("test", "my_table")
+test_spark_rdd.first
+
+
+// cqlsh pour la console cassandra
