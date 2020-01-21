@@ -1,14 +1,26 @@
-~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars /home/ubuntu/spark-cassandra-connector/spark-cassandra-connector/target/full/scala-2.11/spark-cassandra-connector-assembly-2.4.2.jar
+// connect to aws instance
 
+    chmod 400 bdKey.pem
+    ssh -i "bdKey.pem" ubuntu@ec2-54-80-33-86.compute-1.amazonaws.com
 
-sc.stop
-import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf
-val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
-val sc = new SparkContext(conf)
+// se positionner dans le dossier projetBigData
+
+    cd projetBigData
+
+//start scala shell
+
+    ~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars /home/ubuntu/spark-cassandra-connector/spark-cassandra-connector/target/full/scala-2.11/spark-cassandra-connector-assembly-2.4.2.jar
+
+    sc.stop
+    import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf
+    val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
+    val sc = new SparkContext(conf)
 
 // test
-val test_spark_rdd = sc.cassandraTable("test", "my_table")
-test_spark_rdd.first
+    val test_spark_rdd = sc.cassandraTable("test", "my_table")
+    test_spark_rdd.first
 
 
-// cqlsh pour la console cassandra
+// demarer la console cassandra
+
+    cqlsh

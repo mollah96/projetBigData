@@ -1,7 +1,4 @@
-cp /home/ubuntu/spark-cassandra-connector/spark-cassandra-connector/target/full/scala-2.11/spark-cassandra-connector-assembly-2.4.2.jar ~
-~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars ~/spark-cassandra-connector/spark-cassandra-connector-java/target/scala-2.10/spark-cassandra-connector-java-assembly-1.4.0-SNAPSHOT.jar
 
-~/spark-2.4.4-bin-hadoop2.7/bin/spark-shell --jars /home/ubuntu/spark-cassandra-connector/spark-cassandra-connector/target/full/scala-2.11/spark-cassandra-connector-assembly-2.4.2.jar
 
 CREATE KEYSPACE myKeySpace
 WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
