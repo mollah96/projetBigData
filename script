@@ -35,7 +35,10 @@ create table events(
 	id text primary key,
 	date date,
 	city text,
-	state text);
+	state text
+);
+
+
 
 create table graduation(
 	state text,
@@ -52,6 +55,9 @@ create table law(
 	law_rate double,
 	primary key(state,year)
 );
+
+
+copy law (id,year,State,Grade,law_rate) from 'law.csv' with header=true;
 
 create table revenue(
 	state text primary key,

@@ -3,30 +3,93 @@ import re
 
 from datetime import *
 
+
 # event_csv_file = open("EventCSV.csv", "w")
 def convert24(str1):
-    if(str1 is not ""):
+    if (str1 is not ""):
+        print(str1)
         if str1[-2:] == "AM" and str1[:2] == "12":
+            print("if")
             return "00" + str1[2:-2]
 
             # remove the AM
         elif str1[-2:] == "AM":
+            print("elif 1")
             return str1[:-2]
 
             # Checking if last two elements of time
         # is PM and first two elements are 12
         elif str1[-2:] == "PM" and str1[:2] == "12":
+            print("elif 2")
             return str1[:-2]
 
         else:
-
+            print("else")
             # add 12 to hours and remove PM
             return str(int(str1[:2]) + 12) + str1[2:8]
     else:
         return ""
 
 
-with open('gvdb-aggregated-db/Events.tsv') as tsvfile:
+def convert(str1):
+    if (str1 is not ""):
+
+        if (str1.__contains__(":")):
+            print("==================")
+            print("str1: " + str1)
+            print("yes")
+            regex = re.compile(r"(?P<heure>\d*):( *)(?P<minutes>\d*)( *)(?P<tag>.*)")
+            result = regex.search(str1)
+            if result is not None:
+                heure = result.group("heure").replace(" ", "")
+                minutes = result.group("minutes").replace(" ", "")
+                tag = result.group("tag").replace(" ", "")
+                print("heure: " + heure)
+                print("minutes: " + minutes)
+                print("tag: " + tag)
+
+                if tag == "AM" or tag == "a.m":
+                    if heure == "12":
+                        return "00:" + minutes + ":00"
+                    return heure + ":" + minutes + ":00"
+                elif tag == "PM":
+                    if heure == "12":
+                        return "12:" + minutes + ":00"
+                    return str(int(heure) + 12) + ":" + minutes + ":00"
+
+        elif len(str1) > 2:
+            print("----------------------")
+            print("str1: " + str1)
+            print("no")
+            regex = re.compile(r"(?P<heure>\d*)( *)(?P<tag>.*)")
+            result = regex.search(str1)
+            if result is not None:
+                heure = result.group("heure").replace(" ", "")
+                tag = result.group("tag").replace(" ", "")
+                print("heure: " + heure)
+                print("tag: " + tag)
+                if tag == "AM" or tag == "a.m":
+                    return heure + ":00:00"
+                elif tag == "PM":
+                    if heure == "12":
+                        return "12:00:00"
+                    return str(int(heure) + 12) + ":00:00"
+        else:
+            regex = re.compile(r"(?P<tag>.*)")
+            result = regex.search(str1)
+            if result is not None:
+                tag = result.group("tag").replace(" ", "")
+                print("tag: " + tag)
+                if tag == "AM" or tag == "a.m":
+                    return "05:00:00"
+                elif tag == "PM":
+                    return "17:00:00"
+
+    else:
+        return ""
+
+
+with open('Events.tsv') as tsvfile:
     reader = csv.reader(tsvfile, delimiter='\t')
     id_event = 0
 
@@ -41,7 +104,8 @@ with open('gvdb-aggregated-db/Events.tsv') as tsvfile:
 
     participants_csv = open('participants.csv', 'w', newline='')
     participants_csv_writer = csv.writer(participants_csv)
-    participants_csv_writer.writerow(["id_event", "name", "is_victim", "gender", "race", "hospitalized", "killed"])
+    participants_csv_writer.writerow(
+        ["id_event", "name", "is_victim", "gender", "race", "hospitalized", "killed", "injured"])
 
     for row in reader:
         event_csv_writer.writerow([id_event, row[0], row[1]])
@@ -59,13 +123,17 @@ with open('gvdb-aggregated-db/Events.tsv') as tsvfile:
                                   r"\"value\":\"(?P<type_of_gun>.*)\".*")
         resultDetails = regexDetails.search(row[2])
         if resultDetails is not None:
-            clock_time = resultDetails.group("clock_time").replace("a.m.","AM").replace("p.m.","PM").replace("p.m","PM").replace("\'","")
+            clock_time = resultDetails.group("clock_time").replace("a.m.", "AM").replace("p.m.", "PM").replace("p.m",
+                                                                                                               "PM").replace(
+                "\'", "")
             details = resultDetails.group("details")
             number_of_shots_fired = resultDetails.group("number_of_shots_fired")
             time_day = resultDetails.group("time_day")
             type_of_gun = resultDetails.group("type_of_gun")
-            print(clock_time+"--> ")
-            print(convert24(clock_time))
+            # print(clock_time+"--> ")
+            print(convert(clock_time))
+
+            clock_time = convert(clock_time)
 
             """
         print("clock-time: " + clock_time)
@@ -88,9 +156,9 @@ with open('gvdb-aggregated-db/Events.tsv') as tsvfile:
                                        r"u'is_victim': (?P<is_victim>\w*).*"
                                        )
 
-        #print("row :" + row[3])
+        # print("row :" + row[3])
         for participant in row[3].split("}, {"):
-            print("part :" + participant)
+            # print("part :" + participant)
 
             resultParticipants = regexParticipants.search(participant)
             # rint(row[3])
@@ -114,8 +182,9 @@ with open('gvdb-aggregated-db/Events.tsv') as tsvfile:
                 print("killed: " + killed)
                 print("is_victim: " + is_victim)
 '''
+
                 participants_csv_writer.writerow(
-                    [id_event, is_victim, name, gender, race, hospitalized, killed, injured])
+                    [id_event, name, is_victim, gender, race, hospitalized, killed, injured])
             '''
             elif resultParticipants2 is not None:
                 injured = resultParticipants2.group("injured")
