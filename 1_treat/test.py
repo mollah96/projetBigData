@@ -36,17 +36,21 @@ from pyspark.ml.feature import VectorAssembler
 vecAss = VectorAssembler(inputCols = sdf.columns[1:], outputCol = "features")
 df_km = vecAss.transform(sdf).select("state","features")
 
+'''
+cost = list(range(2,20))
+for k in range(2, 20):
+    kmeans = KMeans(k=k, seed=1)
+    km_model = kmeans.fit(df_km)
+    # computeCost
+    cost[k-2] = km_model.computeCost(df_km)
+'''
+
 df_km.show(3)
-print("mark1")
 from pyspark.ml.clustering import KMeans
 kmeans = KMeans(k=4, seed=1)
 km_model = kmeans.fit(df_km)
-print("mark2")
 centers = km_model.clusterCenters()
-print("mark3")
 transformed = km_model.transform(df_km).select('state', 'prediction')
 
 transformed.show(49)
-file="/home/jzhu/desktop/Bigdata/Code/projetBigData/1_treat/result.csv"
-#transformed.to_csv("%s.csv" % file, header=True)
 
