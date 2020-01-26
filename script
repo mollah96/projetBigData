@@ -1,9 +1,13 @@
 
 
-CREATE KEYSPACE myKeySpace
+CREATE KEYSPACE myKeyspace
 WITH replication = {'class':'SimpleStrategy', 'replication_factor' : 3};
 
-use myKeySpace;
+use mykeyspace;
+
+cassandraSQLContext.sql("select * from participants where race='black'");
+long count = metricRDD.map(row -> row.getString(0))
+    distinct().count();
 
 CREATE TABLE people(
 	id int PRIMARY KEY,
@@ -11,6 +15,19 @@ CREATE TABLE people(
 	sex text,
 	age int
 );
+
+create table participants(
+    id_event int PRIMARY KEY,
+    name text,
+    is_victim boolean,
+    gender text,
+    race text,
+    hospitalized boolean,
+    killed boolean,
+    injured boolean
+);
+
+copy participants (id_event,name,is_victim,gender,race,hospitalized,killed,injured) from 'participants.csv' with header=true;
 
 create TABLE events_location(
 	id int primary key,
@@ -79,8 +96,10 @@ create table state(
 create table immigrants(
 	state text primary key,
 	illegal_immigrants int,
-	rate double
+	illegal_rate double
 );
+
+copy immigrants (state,illegal_immigrants,illegal_rate) from 'immigrants.csv' with header=true;
 
 create table police(
 	state text primary key,
@@ -88,4 +107,6 @@ create table police(
 	police_spending double,
 	rate double
 );
+copy immigrants (State,total_income,police_spending,rate) from 'immigrants.csv' with header=true;
+
 

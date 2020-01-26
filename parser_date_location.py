@@ -66,6 +66,3 @@ with open('Events.tsv') as tsvfile:
 
     print(counter)
     cluster.shutdown()
-            
-            
-        

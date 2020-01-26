@@ -2,12 +2,29 @@ from numpy import cov
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
+from descartes import PolygonPatch
 import random
 
+import csv
+def getData(inputFile):
+    state = []
+    totalCrime = []
+    with open(inputFile, newline='') as csvfile:
+        spamreader = csv.DictReader(csvfile)
+        for row in spamreader:
+            state.append(row['state'])
+            totalCrime.append(row['gun_owner_rate'])
+    return state, totalCrime
+
 # random for the moment
-crime_rate = []
+crime_rate=[]
+print(getData("1_treat/gun_ownership_output.csv"))
+'''
 for i in range(0, 52):
-    crime_rate.append(random.random())
+    crime_rate.append()
+'''
+
+
 
 usa = gpd.read_file('./maps/states.shp')
 
@@ -22,6 +39,7 @@ def visualize_usa_by_column(column):
     fig, ax = plt.subplots(figsize=(30, 30))
 
     usa[0:51].plot(column=column, legend=True, legend_kwds=label, ax=ax, alpha=0.3, cmap='OrRd', edgecolor='g')
+    plt.show()
 
 
 def calculate_and_plot_correlation(data1, data2, corr_name):
@@ -47,3 +65,5 @@ for i in range(0, 52):
 insert_to_shapely_file(poverty_rate, 'POVERTY_RATE')
 
 visualize_usa_by_column('POVERTY_RATE')
+
+calculate_and_plot_correlation(usa.CRIME_RATE, usa.POVERTY_RATE, 'poverty rate')

@@ -13,8 +13,15 @@
 
     sc.stop
     import com.datastax.spark.connector._, org.apache.spark.SparkContext, org.apache.spark.SparkContext._, org.apache.spark.SparkConf
+
+
     val conf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
     val sc = new SparkContext(conf)
+
+    /*
+    import org.apache.spark.sql.cassandra.CassandraSQLContextFunctions, org.apache.spark.sql.cassandra.CassandraSQLContextParams
+    val csc = new CassandraSQLContext(sc)
+    */
 
 // test
     val test_spark_rdd = sc.cassandraTable("test", "my_table")
