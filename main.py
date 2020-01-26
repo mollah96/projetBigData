@@ -22,7 +22,7 @@ def calculate_and_plot_correlation(data1, data2, corr_name):
     corr, _ = pearsonr(data1, data2)
 
     fig = plt.figure()
-    fig.suptitle(f'Correlation with {corr_name} is {round(corr, 2)}', fontsize=14, fontweight='bold')
+    fig.suptitle(f'{corr_name} is {round(corr, 2)}', fontsize=14, fontweight='bold')
 
     plt.scatter(data1, data2)
     plt.show()
@@ -62,22 +62,21 @@ insert_to_shapely_file_from_csv('data/graduation.csv', 'STATE_NAME', 'grad_rate'
 
 insert_to_shapely_file_from_csv('data/education_spending.csv', 'STATE_NAME', 'cost_per_student')
 
+insert_to_shapely_file_from_csv('data/immigrants.csv', 'STATE_NAME', 'illegal_immigrant_rate')
+
 visualize_usa_by_column('EVENT_COUNT')
 
 visualize_usa_by_column('GUN_OWNER_RATE')
-
-visualize_usa_by_column('POLICE_SPENDING')
-
-visualize_usa_by_column('COST_PER_STUDENT')
-
-visualize_usa_by_column('GRAD_RATE')
-
-visualize_usa_by_column('COST_PER_STUDENT')
-
 calculate_and_plot_correlation(usa.EVENT_COUNT, usa.GUN_OWNER_RATE, 'Crime and un ownership correlation')
 
+visualize_usa_by_column('POLICE_SPENDING')
 calculate_and_plot_correlation(usa.EVENT_COUNT, usa.POLICE_SPENDING, 'Crime and police spending correlation')
 
+visualize_usa_by_column('COST_PER_STUDENT')
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.COST_PER_STUDENT, 'Crime and cost per student correlation')
+
+visualize_usa_by_column('GRAD_RATE')
 calculate_and_plot_correlation(usa.EVENT_COUNT, usa.GRAD_RATE, 'Crime and graduation rate correlation')
 
-calculate_and_plot_correlation(usa.EVENT_COUNT, usa.COST_PER_STUDENT, 'Crime and cost per student correlation')
+visualize_usa_by_column('ILLEGAL_IMMIGRANT_RATE')
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.ILLEGAL_IMMIGRANT_RATE, 'Crime and illegal immigration correlation')
