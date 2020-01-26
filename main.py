@@ -2,36 +2,9 @@ from numpy import cov
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
-from descartes import PolygonPatch
-import random
-
 import csv
-def getData(inputFile):
-    state = []
-    totalCrime = []
-    with open(inputFile, newline='') as csvfile:
-        spamreader = csv.DictReader(csvfile)
-        for row in spamreader:
-            state.append(row['state'])
-            totalCrime.append(row['gun_owner_rate'])
-    return state, totalCrime
-
-# random for the moment
-crime_rate=[]
-print(getData("1_treat/gun_ownership_output.csv"))
-'''
-for i in range(0, 52):
-    crime_rate.append()
-'''
-
-
 
 usa = gpd.read_file('./maps/states.shp')
-
-
-def insert_to_shapely_file(array, name):
-    for index, row in usa.iterrows():
-        usa.loc[index, name] = array[index]
 
 
 def visualize_usa_by_column(column):
@@ -55,15 +28,56 @@ def calculate_and_plot_correlation(data1, data2, corr_name):
     plt.show()
 
 
-insert_to_shapely_file(crime_rate, 'CRIME_RATE')
+def insert_to_shapely_file_from_csv(file, state_format, rate_column):
+    with open(file, newline='') as csv_file:
 
-# random for the moment
-poverty_rate = []
-for i in range(0, 52):
-    poverty_rate.append(7 * random.random())
+        reader = csv.DictReader(csv_file)
+        data = {}
 
-insert_to_shapely_file(poverty_rate, 'POVERTY_RATE')
+        for row in reader:
+            state = row['state']
+            rate = row[rate_column]
 
-visualize_usa_by_column('POVERTY_RATE')
+            data[state] = rate
+            column = rate_column
 
-calculate_and_plot_correlation(usa.CRIME_RATE, usa.POVERTY_RATE, 'poverty rate')
+        i = 0
+        for abr in usa.get(state_format):
+
+            try:
+                usa.loc[i, column.upper()] = float(data[abr])
+            except:
+                usa.loc[i, column.upper()] = 0
+
+            i = i + 1
+
+
+insert_to_shapely_file_from_csv('data/incidents.csv', 'STATE_ABBR', 'event_count')
+
+insert_to_shapely_file_from_csv('data/gun_ownership.csv', 'STATE_NAME', 'gun_owner_rate')
+
+insert_to_shapely_file_from_csv('data/police_spending.csv', 'STATE_NAME', 'police_spending')
+
+insert_to_shapely_file_from_csv('data/graduation.csv', 'STATE_NAME', 'grad_rate')
+
+insert_to_shapely_file_from_csv('data/education_spending.csv', 'STATE_NAME', 'cost_per_student')
+
+visualize_usa_by_column('EVENT_COUNT')
+
+visualize_usa_by_column('GUN_OWNER_RATE')
+
+visualize_usa_by_column('POLICE_SPENDING')
+
+visualize_usa_by_column('COST_PER_STUDENT')
+
+visualize_usa_by_column('GRAD_RATE')
+
+visualize_usa_by_column('COST_PER_STUDENT')
+
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.GUN_OWNER_RATE, 'Crime and un ownership correlation')
+
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.POLICE_SPENDING, 'Crime and police spending correlation')
+
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.GRAD_RATE, 'Crime and graduation rate correlation')
+
+calculate_and_plot_correlation(usa.EVENT_COUNT, usa.COST_PER_STUDENT, 'Crime and cost per student correlation')
